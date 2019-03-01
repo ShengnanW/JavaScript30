@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>JS + CSS Clock</title>
 </head>
+
 <body>
 
 
-    <div class="clock">
-      <div class="clock-face">
-        <div class="hand hour-hand"></div>
-        <div class="hand min-hand"></div>
-        <div class="hand second-hand"></div>
-      </div>
+  <div class="clock">
+    <div class="clock-face">
+      <div class="hand hour-hand"></div>
+      <div class="hand min-hand"></div>
+      <div class="hand second-hand"></div>
     </div>
+  </div>
 
 
   <style>
@@ -43,32 +45,86 @@
       position: relative;
       padding: 2rem;
       box-shadow:
-        0 0 0 4px rgba(0,0,0,0.1),
+        0 0 0 4px rgba(0, 0, 0, 0.1),
         inset 0 0 0 3px #EFEFEF,
         inset 0 0 10px black,
-        0 0 10px rgba(0,0,0,0.2);
+        0 0 10px rgba(0, 0, 0, 0.2);
     }
 
     .clock-face {
       position: relative;
       width: 100%;
       height: 100%;
-      transform: translateY(-3px); /* account for the height of the clock hands */
+      transform: translateY(-3px);
+      /* account for the height of the clock hands */
+    }
+
+    .clock-face:after {
+      content: '';
+      width: 25px;
+      height: 25px;
+      display: block;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1), 0 0 20px rgba(0, 0, 0, 0.2);
+      background-color: tan;
     }
 
     .hand {
       width: 50%;
-      height: 6px;
-      background: black;
+      height: 8px;
+      background: white;
       position: absolute;
       top: 50%;
+      transform: rotate(0deg);
+      transform-origin: 100%;
+      transition: all 0.05s;
+      transition-timing-function: cubic-bezier(1, 0.19, 0.86, 0.37);
+      border-radius: 100% 0 0 0;
     }
 
+    .second-hand {
+      background: red;
+      height: 4px;
+    }
   </style>
 
   <script>
+    const secNode = document.querySelector('.second-hand')
+    const minNode = document.querySelector('.min-hand')
+    const hourNode = document.querySelector('.hour-hand')
 
+    let secondDeg, minDeg, hourDeg = 0
 
+    function initDate() {
+      const date = new Date()
+      console.log(date)
+      const second = date.getSeconds()
+      secondDeg = 90 + (second / 60) * 360
+
+      const minute = date.getMinutes()
+      minDeg = 90 + (minute / 60) * 360
+
+      const hour = date.getHours()
+      hourDeg = 90 + ((hour / 12) * 360) + (minute / 12 / 60) * 360
+    }
+
+    function upDate() {
+      secondDeg += (1 / 60) * 360
+      secNode.style.transform = `rotate(${secondDeg}deg)`
+
+      minDeg += (1 / 60 / 60) * 360
+      minNode.style.transform = `rotate(${minDeg}deg)`
+
+      hourDeg += (1 / 12 / 60 / 60) * 360
+      hourNode.style.transform = `rotate(${hourDeg}deg)`
+    }
+    initDate()
+    setInterval(upDate, 1000)
   </script>
 </body>
+
 </html>
