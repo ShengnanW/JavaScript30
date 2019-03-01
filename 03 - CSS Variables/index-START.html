@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Scoped CSS Variables and JS</title>
 </head>
+
 <body>
-  <h2>Update CSS Variables with <span class='hl'>JS</span></h2>
+  <h2>Update CSS Variables with <span class='h1'>JS</span></h2>
 
   <div class="controls">
     <label for="spacing">Spacing:</label>
@@ -21,10 +23,15 @@
   <img src="https://source.unsplash.com/7bwQXzbF6KE/800x500">
 
   <style>
-
     /*
       misc styles, nothing to do with CSS variables
     */
+
+    :root {
+      --spacing: 10px;
+      --blur: 10px;
+      --base: #ffc600;
+    }
 
     body {
       text-align: center;
@@ -42,10 +49,51 @@
     input {
       width: 100px;
     }
+
+    img {
+      padding: var(--spacing);
+      filter: blur(var(--blur));
+      background-color: var(--base);
+    }
+
+    .h1 {
+      color: var(--base);
+    }
   </style>
 
+  <!-- <script>
+    const img = document.querySelector('img'),
+      spacing = document.querySelector('#spacing'),
+      blur = document.querySelector('#blur'),
+      basecolor = document.querySelector('#base')
+
+    spacing.addEventListener('change', (e) => {
+      img.style.padding = `${e.target.value}px`
+    })
+
+    blur.addEventListener('change', (e) => {
+      img.style.filter = `blur(${e.target.value}px)`
+    })
+
+    basecolor.addEventListener('change', (e) => {
+      console.log(e.target.value)
+      img.style.backgroundColor = e.target.value
+    })
+  </script> -->
   <script>
+    //改良版本
+    const inputs = document.querySelectorAll('.controls input')
+
+    function getInputValue() {
+      const suffix = this.dataset.sizing || ''
+      document.documentElement.style.setProperty(`--${this.name}`, this.value + suffix)
+      //在 JavaScript 中 document.documentElement 即代表文档根元素
+    }
+
+    inputs.forEach((input) => input.addEventListener('change', getInputValue))
+    inputs.forEach((input) => input.addEventListener('mousemove', getInputValue))
   </script>
 
 </body>
+
 </html>
