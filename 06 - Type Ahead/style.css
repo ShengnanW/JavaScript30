@@ -51,6 +51,7 @@ input.search {
   padding: 20px;
   transition: background 0.2s;
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
   text-transform: capitalize;
 }
@@ -66,6 +67,20 @@ input.search {
 }
 
 span.population {
+  font-size: 15px;
+}
+span.author, span.title {
+  font-size: .8em;
+  /*		right: 0;*/
+}
+span.author {
+  color: #7c8e94;
+  position: absolute;
+  right: 5px;
+  bottom: 1px;
+}
+span.details {
+  text-align: center;
   font-size: 15px;
 }
 
