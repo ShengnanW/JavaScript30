@@ -1,22 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Type Ahead 👀</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <title>诗句匹配</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <form class="search-form">
-    <input type="text" class="search" placeholder="City or State">
+<form class="search-form">
+    <input type="text" class="search" placeholder="诗句 诗人 诗名 ">
     <ul class="suggestions">
-      <li>Filter for a city</li>
-      <li>or a state</li>
-    </ul>
-  </form>
-<script>
-const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
 
+    </ul>
+</form>
+<script>
+    const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+    const poetAddress = 'https://gist.githubusercontent.com/soyaine/81399bb2b24ca1bb5313e1985533c640/raw/bdf7df2cbcf70706c4a5e51a7dfb8c933ed78878/TangPoetry.json'
+    const ul = document.querySelector('.suggestions'),
+        input = document.querySelector('.search')
+
+    const dataArr = []
+    fetch(poetAddress)
+        .then((response) => response.json())
+        .then(data => {
+            dataArr.push(...data) //异步数据的获取和保存自己不会
+        })
+
+    function findData(index) {
+        const regex = new RegExp(index, 'gi')
+        const res = dataArr.map(item => {
+            const tempData = {}
+            tempData.title = item.title
+            tempData.author = item.detail_author.join(',')
+            tempData.text = item.detail_text
+            return tempData
+        }).filter(item => item.title.match(regex) || item.author.match(regex) || item.text.match(regex))
+        return res
+    }
+
+    function renderData() {
+        const poetry = findData(this.value) //关键词维输入框里面的内容(this.value)，而不是e.target.value
+        poetry.forEach(item => {
+            ul.innerHTML += `<li>
+        <span class="title">《${item.title}》</span>
+        <span class="author">${item.author}</span>
+        <span class="details">${item.text}</span>
+</li>`
+        })
+    }
+
+    input.addEventListener('input', renderData)
+    input.addEventListener('keyup', renderData)
 </script>
 </body>
 </html>

@@ -1,18 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>HTML5 Canvas</title>
+    <meta charset="UTF-8">
+    <title>HTML5 Canvas</title>
 </head>
 <body>
 <canvas id="draw" width="800" height="800"></canvas>
 <script>
+    const canvas = document.querySelector('canvas')
+    canvas.style.width = window.innerWidth
+    canvas.style.height = window.innerHeight
+
+    let isDraw = false,
+        hue = 0,
+        lineWidth = -20,
+        lastPoint = []
+
+    function lineStyleChange() {
+        hue++
+        if (hue > 360) hue = 0
+        lineWidth += 0.5
+        if (lineWidth > 20) lineWidth = -20
+    }
+
+    function beginDraw(e) {
+        isDraw = true
+        // console.log(e.clientX, e.clientY)
+        lastPoint = [e.offsetX, e.offsetY]
+    }
+
+
+    function drawLine(e) {
+        if (!isDraw) return
+        const ctx = canvas.getContext('2d')
+        ctx.beginPath()
+        ctx.moveTo(...lastPoint)
+        ctx.lineTo(e.offsetX, e.offsetY)
+        lastPoint = [e.offsetX, e.offsetY]
+        ctx.lineWidth = lineWidth
+        ctx.lineCap = 'round'
+        ctx.lineJoin = 'round'
+        ctx.strokeStyle = `hsl(${hue},100%,50%)`
+        lineStyleChange()
+        ctx.stroke()
+    }
+
+
+    canvas.addEventListener('mousedown', beginDraw)
+    canvas.addEventListener('mouseup', () => isDraw = false)
+    canvas.addEventListener('mouseout', () => isDraw = false)
+    canvas.addEventListener('mousemove', drawLine)
+
 </script>
 
 <style>
-  html, body {
-    margin: 0;
-  }
+    html, body {
+        margin: 0;
+    }
 </style>
 
 </body>
