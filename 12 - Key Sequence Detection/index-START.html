@@ -9,8 +9,8 @@
 
 <body>
   <script>
-    const tempArr = [],
-      secretCode = 'hello'
+    const secretCode = 'hello'
+    let tempArr = []
     
       function pressHandle(e) {
         tempArr.push(e.key)
@@ -18,7 +18,7 @@
         if (pressed === secretCode) {
           //console.log(pressed)
           cornify_add()
-          return
+          tempArr = []
         }
       }
     
