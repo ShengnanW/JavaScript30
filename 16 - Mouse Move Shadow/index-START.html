@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Mouse Shadow</title>
 </head>
+
 <body>
 
   <div class="hero">
@@ -11,30 +13,57 @@
   </div>
 
   <style>
-  html {
-    color: black;
-    font-family: sans-serif;
-  }
+    html {
+      color: black;
+      font-family: sans-serif;
+    }
 
-  body {
-    margin: 0;
-  }
+    body {
+      margin: 0;
+    }
 
-  .hero {
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: black;
-  }
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: black;
+    }
 
-  h1 {
-    text-shadow: 10px 10px 0 rgba(0,0,0,1);
-    font-size: 100px;
-  }
+    h1 {
+      text-shadow: 10px 10px 0 rgba(255, 255, 1, 0.5);
+      font-size: 100px;
+    }
   </style>
 
-<script>
-</script>
+  <script>
+    const hero = document.querySelector('.hero'),
+      text = hero.querySelector('h1'),
+      ratio = 0.5
+    //console.log(h1.style.textShadow)
+
+    function shadowMove(e) {
+      const {
+        offsetWidth: width,
+        offsetHeight: height
+      } = hero
+      let {
+        offsetX: x,
+        offsetX: y,
+      } = e
+      //console.log(this) // div整个可视区
+      const rangeX = Math.round((x - width/2) * ratio)
+      const rangeY = Math.round((y - height/2) * ratio)
+      text.style.textShadow =
+        `
+      ${rangeX}px ${rangeY}px 0 rgba(255, 255, 0, 0.5),
+      -${rangeX}px ${rangeY}px 0 rgba(0, 255, 0, 0.5),
+      ${rangeX}px -${rangeY}px 0 rgba(0, 0, 255, 0.5), 
+      -${rangeX}px -${rangeY}px 0 rgba(255, 0, 255, 0.5)` //不能加分号，加了分号不起作用
+    }
+
+    hero.addEventListener('mousemove', shadowMove)
+  </script>
 </body>
+
 </html>
