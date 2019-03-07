@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Videos</title>
 </head>
+
 <body>
   <ul class="videos">
     <li data-time="5:43">
@@ -181,7 +183,22 @@
       Video 58
     </li>
   </ul>
-<script>
-</script>
+  <script>
+    const list = document.querySelectorAll('.videos li')
+    let min = 0,
+      sec = 0
+
+    list.forEach(item => {
+      const timeArr = item.dataset.time.split(':')
+      sec += Number(timeArr[1])
+      min += Number(timeArr[0])
+    })
+    const totaltime = sec + min * 60
+    const second = totaltime % 60
+    const minute = Math.floor(totaltime / 60) % 60
+    const hour = Math.floor(totaltime / 3600) % 24
+    console.log(`总播放时间为：${hour}小时${minute}分钟${second}秒`)
+  </script>
 </body>
+
 </html>
